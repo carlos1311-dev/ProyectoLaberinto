@@ -35,5 +35,10 @@ public class Carro {
 		return movimientosRestantes;
 	}
 
+	public void setMovimientosRestantes(int movimientosRestantes) {
+		this.movimientosRestantes = movimientosRestantes;
+	}
+	
+
 	
 }
