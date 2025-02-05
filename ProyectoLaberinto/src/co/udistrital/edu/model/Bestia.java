@@ -1,5 +1,4 @@
 package co.udistrital.edu.model;
-import java.util.Random;
 
 public abstract class Bestia {
 	protected int x;

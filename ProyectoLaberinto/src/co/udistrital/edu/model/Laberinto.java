@@ -25,20 +25,48 @@ public class Laberinto {
 			if(carro.getX() == bestia.getX() && carro.getY() == bestia.getY()) {
 				if(bestia instanceof AsesinoLetal) {
 					System.out.println("¡Te encontraste con un AsesinoLetal, has perdido!!!");
+					return;
 				}else if(bestia instanceof Tormentoso) {
-					int penalizacion = (int) (carro.getMovimientosRestantes()*0.05); //consul
-					System.out.println("¡Te encontraste con Bestia Tormentosa: se penalizan: "+ (int) (carro.getMovimientosRestantes()*0.05)+ "movimientos");
-					
+					int penalizacion = (int)(carro.getMovimientosRestantes()*0.05);
+					System.out.println("¡Te encontraste con Bestia Tormentosa: se penalizan: "+ penalizacion + "movimientos");
+					penalizarMovimientos(penalizacion);
 				}
 			}
 		}
 	}
 	
-	public void penalizarMovimientos(int movimientos) {
-		int penalizacion = (int) (carro.getMovimientosRestantes()*0.05);
+	public void penalizarMovimientos(int penalizacion) {
 		carro.setMovimientosRestantes(Math.max(0, carro.getMovimientosRestantes() - penalizacion)); // usa Math.max que elige el mayor de dos números dados, para que no haya negativos
-		
 	}
+	
+	public void verificarEntreMuros() {
+		for(int i= 0; i > muros.size()-1; i++) {
+			for (int j= i+1; j > muros.size(); j++) {
+				Muro muro1 = muros.get(i);
+				Muro muro2 = muros.get(j);
+				if (estarEntreMuros(muro1,muro2)) {
+					int penalizacion = carro.getX() + carro.getY();
+					System.out.println("Estas entre dos muros, penalizacion de :"+ penalizacion + "movimientos");
+					penalizarMovimientos(penalizacion);
+				}
+			}
+		}
+	}
+	private boolean estarEntreMuros(Muro muro1, Muro muro2) {
+	    return (carro.getX() == muro1.getX() && carro.getX() == muro2.getX() &&  //Verifica que el carro esté en la misma fila que los dos muros
+	            carro.getY() > Math.min(muro1.getY(), muro2.getY()) &&          //Si la posicion en y es mayor que el muro que está mas bajo, y menor que el que está mas alto, significa que está entre los dos muros
+	            carro.getY() < Math.max(muro1.getY(), muro2.getY()) ||
+	           (carro.getY() == muro1.getY() && carro.getY() == muro2.getY()) && // Verifica que el carro esté en la misma columna que los dos muros
+	            carro.getX() > Math.min(muro1.getX(), muro2.getX()) &&         //Si la posicion en x es mayor que el muro que está mas a la izquierda, y menor que el que está mas a la derecha, significa que está entre los dos muros
+	            carro.getX() < Math.max(muro1.getX(), muro2.getX()));
+	}
+	
+	public void moverBestias() {
+		for(Bestia bestia: bestias) {
+			bestia.mover(filas,columnas);
+		}
+	}
+
 	
 		public Carro getCarro() {
 		return carro;
