@@ -17,13 +17,23 @@ public class PuntosObjetivo {
 	public int getX() {
 		return x;
 	}
+	
 	public int getY() {
 		return y;
 	}
+	
 	public int getOrden() {
 		return orden;
 	}
-	
-	
 
+	public boolean isAlcanzado() {
+		return alcanzado;
+	}
+
+	public void setAlcanzado(boolean alcanzado) {
+		this.alcanzado = alcanzado;
+	}
+	
 }
+
+	

@@ -9,6 +9,8 @@ public class Laberinto {
 	private List<PuntosObjetivo> puntoObjetivo;
 	private List<Muro> muros;
 	private List<Bestia> bestias;
+	private int indicePuntoActual;
+	private Boolean recorridoInverso;
 	
 	public Laberinto(int filas, int columnas, int movimientosIniciales) {
 		super();
@@ -20,6 +22,47 @@ public class Laberinto {
 		this.muros = new ArrayList<>();
 	}
 	
+	public void setRecorridoInverso(boolean recorridoInverso) { 
+		this.recorridoInverso = recorridoInverso;
+		if(recorridoInverso) {                                 //Si el valor de recorridoInverso(boolean) es true, el indice de puntos tomará el último valor de puntosObjetivo
+			indicePuntoActual = puntoObjetivo.size()-1;
+		}else{
+			indicePuntoActual = 0;
+		}
+	}
+	
+	public void verificarPuntoObjetivo() {
+		if(!puntoObjetivo.isEmpty()) {
+			PuntosObjetivo puntoActual = puntoObjetivo.get(indicePuntoActual);
+			if(carro.getX() == puntoActual.getX() && carro.getY() == puntoActual.getY()) { // Verifica que el carrito este en la misma posicion que el puntoObjetivo actual
+				puntoActual.setAlcanzado(true); 
+				System.out.println("Punto objetivo " + puntoActual.getOrden() + " alcanzado");
+				actualizarIndicePuntoObjetivo();
+			}
+	   }
+	}
+	
+	public void actualizarIndicePuntoObjetivo() {
+		if(recorridoInverso) {
+			if(indicePuntoActual > 0) { // Si el indice es mayor que 0, restar, pues está en orden inverso
+				indicePuntoActual--;
+			}
+		}else {
+			if(indicePuntoActual < puntoObjetivo.size()-1) { //Si el indice actual es menor que el último elemento de la lista, sumar hasta alcanzar el máximo
+				indicePuntoActual ++;
+			}
+		}
+	}
+	
+	public void verificarVictoria() {
+		for(PuntosObjetivo punto: puntoObjetivo) {
+			boolean victoria = true;
+			if(!punto.isAlcanzado()) {
+				victoria = false;
+				break;
+			}
+		}
+	}
 	public void verificarEncuentros() {
 		for(Bestia bestia: bestias) {
 			if(carro.getX() == bestia.getX() && carro.getY() == bestia.getY()) {
